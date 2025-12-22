@@ -2,6 +2,8 @@ import express from "express";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import {connectDb} from "./config/config.js";
+import {errorHandler} from "./utils/utils.js";
 
 //configure env variable
 dotenv.config();
@@ -12,10 +14,12 @@ const app = express();
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
+app.use(errorHandler);
 
 
-const PORT = 9000 || process.env.PORT;
-
-app.listen(PORT,()=>{
- console.log(`Server is Up and Running On PORT ${PORT}`)
+connectDb().then(()=>{
+    app.listen(process.env.PORT || 9000, () => {
+        console.log(`Server is running at port : ${process.env.PORT}`);
+    });
 })
+    
