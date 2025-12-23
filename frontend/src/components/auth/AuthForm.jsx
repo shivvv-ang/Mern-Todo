@@ -1,4 +1,6 @@
-const AuthForm = ({ title, subtitle, onSubmit, children, footer }) => {
+import { memo } from "react";
+
+const AuthForm = memo(({ title, subtitle, onSubmit, children, footer }) => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#f9f9f9] px-4">
             <div
@@ -34,7 +36,7 @@ const AuthForm = ({ title, subtitle, onSubmit, children, footer }) => {
             </div>
         </div>
     );
-};
+});
 
 export default AuthForm;
   

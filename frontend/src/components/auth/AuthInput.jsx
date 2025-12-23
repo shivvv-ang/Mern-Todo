@@ -1,4 +1,5 @@
-const AuthInput = ({ label, type = "text", ...props }) => {
+import { memo } from "react";
+const AuthInput = memo(({ label, type = "text", ...props }) => {
     return (
         <div className="space-y-1.5">
             <label className="text-sm font-medium text-gray-700">
@@ -27,7 +28,7 @@ const AuthInput = ({ label, type = "text", ...props }) => {
             />
         </div>
     );
-};
+});
 
 export default AuthInput;
   

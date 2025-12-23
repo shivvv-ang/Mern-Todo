@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AuthContext from "./AuthContext.jsx";
-
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        try {
-            const storedUser = localStorage.getItem("user");
-
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
-            }
-        } finally {
-            setLoading(false);
-        }
-    }, []);
 
     const login = ({ user }) => {
         localStorage.setItem("user", JSON.stringify(user));
@@ -28,8 +15,22 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+   
+    const authValue = useMemo(() => ({ user, login, logout, loading }), [user, loading]);
+
+    useEffect(() => {
+        try {
+            const storedUser = localStorage.getItem("user");
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={authValue}>
             {children}
         </AuthContext.Provider>
     );
