@@ -1,4 +1,4 @@
-const AuthForm = ({ title, subtitle, onSubmit, children }) => {
+const AuthForm = ({ title, subtitle, onSubmit, children, footer }) => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#f9f9f9] px-4">
             <div
@@ -25,6 +25,12 @@ const AuthForm = ({ title, subtitle, onSubmit, children }) => {
                 <form onSubmit={onSubmit} className="space-y-5">
                     {children}
                 </form>
+
+                {footer && (
+                    <div className="mt-6 text-center text-sm text-gray-600">
+                        {footer}
+                    </div>
+                )}
             </div>
         </div>
     );

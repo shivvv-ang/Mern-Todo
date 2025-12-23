@@ -1,4 +1,23 @@
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../api/auth.api";
+import useAuth from "../../hooks/useAuth";
+
+
 const Navbar = () => {
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+
+            logout();
+
+            navigate("/login");
+
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    }
     return (
         <header className="bg-white border-b border-gray-100">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
@@ -13,33 +32,35 @@ const Navbar = () => {
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                        <div className="hidden sm:flex flex-col text-right">
-                            <span className="text-sm font-medium text-gray-900">
-                                John Doe
-                            </span>
-                            <span className="text-xs text-gray-500">
-                                john.doe@gmail.com
-                            </span>
-                        </div>
+                    {user && (
+                        <div className="flex items-center gap-4">
+                            <div className="hidden sm:flex flex-col text-right">
+                                <span className="text-sm font-medium text-gray-900">
+                                    {user.name}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                    {user.email}
+                                </span>
+                            </div>
 
-                       
-                        <div className="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-700">
-                            JD
-                        </div>
 
-                        <button
-                            className="
+                            <div className="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-700">
+                                {user?.name?.charAt(0).toUpperCase()}
+                            </div>
+
+                            <button
+                                className="
                   text-sm 
                   text-gray-600 
                   hover:text-black
                   transition
                 "
-                        >
-                            Logout
-                        </button>
-                    </div>
-
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>
@@ -47,4 +68,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-  

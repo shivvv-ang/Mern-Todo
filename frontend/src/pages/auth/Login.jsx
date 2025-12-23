@@ -2,8 +2,17 @@ import AuthForm from '../../components/auth/AuthForm'
 import AuthInput from '../../components/auth/AuthInput'
 import AuthButton from '../../components/auth/AuthButton'
 import { useState } from 'react';
+import { loginUser } from '../../api/auth.api';
+import {  Link, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+
+
 
 const Login = () => {
+
+    const { login } = useAuth();
+    const navigate = useNavigate();
+  
 
     const [form, setForm] = useState({ email: "", password: "" });
 
@@ -15,13 +24,35 @@ const Login = () => {
         }));
       };
 
-    const handleSubmit = async () => {}
+    const handleSubmit = async (e) => {
+        
+        e.preventDefault();
+
+        const res = await loginUser(form);
+
+        login({
+            user: res.data.data,
+        });
+
+        navigate("/dashboard");
+      };
 
   return (
       <AuthForm
           title="Welcome back"
           subtitle="Log in to manage your tasks"
           onSubmit={handleSubmit}
+          footer={
+              <>
+                  Don’t have an account?{" "}
+                  <Link
+                      to="/register"
+                      className="font-medium text-black hover:underline"
+                  >
+                      Create one
+                  </Link>
+              </>
+          }
       >
           <AuthInput
               label="Email"
