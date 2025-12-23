@@ -5,4 +5,22 @@ const api = axios.create({
     withCredentials: true,
 });
 
+// Global response interceptor
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        const status = error?.response?.status;
+
+        if (status === 401 || status === 403) {
+          
+            localStorage.removeItem("user");
+
+            window.location.href = "/login";
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export default api;

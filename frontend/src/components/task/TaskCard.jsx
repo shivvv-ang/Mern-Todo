@@ -1,45 +1,98 @@
-const statusStyles = {
-    PENDING: "bg-yellow-100 text-yellow-700",
-    DONE: "bg-green-100 text-green-700",
-};
+import { useState } from "react";
 
-const TaskCard = ({ task }) => {
+const TaskCard = ({ task, onUpdate, onDelete }) => {
+
+    const [isEditing, setIsEditing] = useState(false);
+
+    const [form, setForm] = useState({
+        title: task.title,
+        description: task.description || "",
+    });
+
     return (
-        <div
-            className="
-          bg-white 
-          rounded-2xl 
-          border 
-          border-gray-100
-          p-5
-          shadow-[0_8px_24px_rgba(0,0,0,0.03)]
-          hover:shadow-[0_12px_32px_rgba(0,0,0,0.05)]
-          transition
-        "
-        >
-            
-            <span
-                className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full mb-3 ${statusStyles[task.status]}`}
-            >
-                {task.status}
-            </span>
+        <div className="border rounded p-4 flex justify-between items-start">
+            <div>
+                {isEditing ? (
+                    <>
+                        <input
+                            value={form.title}
+                            onChange={(e) => setForm({ ...form, title: e.target.value })}
+                            className="border px-2 py-1 rounded w-full mb-2"
+                        />
 
-            <h3 className="text-base font-semibold text-gray-900 mb-1">
-                {task.title}
-            </h3>
+                        <textarea
+                            value={form.description}
+                            onChange={(e) =>
+                                setForm({ ...form, description: e.target.value })
+                            }
+                            className="border px-2 py-1 rounded w-full"
+                        />
+                    </>
+                ):(
+                        <>
+                            <h3 className={`font-medium ${task.status === "DONE" && "line-through"}`}>
+                                {task.title}
+                            </h3>
+                            {task.description && (
+                                <p className="text-sm text-gray-600">{task.description}</p>
+                            )}
+                        </>
+                )}
+               
+            </div>
 
-            <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                {task.description}
-            </p>
+            <div className="flex gap-2">
+                {isEditing ? (
+                    <>
+                        <button
+                            onClick={() => {
+                                onUpdate(task._id, form);
+                                setIsEditing(false);
+                            }}
+                            className="text-sm text-green-600"
+                        >
+                            Save
+                        </button>
 
-            <div className="flex items-center justify-between">
-                <button className="text-sm text-gray-500 hover:text-black transition">
-                    Edit
-                </button>
-
-                <button className="text-sm text-red-500 hover:text-red-600 transition">
-                    Delete
-                </button>
+                        <button
+                            onClick={() => {
+                                setForm({
+                                    title: task.title,
+                                    description: task.description || "",
+                                });
+                                setIsEditing(false);
+                            }}
+                            className="text-sm text-gray-500"
+                        >
+                            Cancel
+                        </button>
+                    </>
+                ) : (
+                    <>
+                            <button
+                                onClick={() => setIsEditing(true)}
+                                className="text-sm"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() =>
+                                    onUpdate(task._id, {
+                                        status: task.status === "DONE" ? "PENDING" : "DONE",
+                                    })
+                                }
+                                className="text-sm"
+                            >
+                                {task.status === "DONE" ? "Undo" : "Done"}
+                            </button>
+                            <button
+                                onClick={() => onDelete(task._id)}
+                                className="text-sm text-red-500"
+                            >
+                                Delete
+                            </button>
+                    </>
+                )}
             </div>
         </div>
     );
