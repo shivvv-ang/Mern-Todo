@@ -16,6 +16,7 @@ const corsOptions = {
     origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 //middleware's
