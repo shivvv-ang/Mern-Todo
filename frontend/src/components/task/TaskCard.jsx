@@ -1,13 +1,33 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const TaskCard = ({ task, onUpdate, onDelete }) => {
-
     const [isEditing, setIsEditing] = useState(false);
-
     const [form, setForm] = useState({
         title: task.title,
         description: task.description || "",
     });
+
+    const handleFieldChange = useCallback((field, value) => {
+        setForm((prev) => ({ ...prev, [field]: value }));
+    }, []);
+
+    const handleSave = useCallback(() => {
+        onUpdate(task._id, form);
+        setIsEditing(false);
+    }, [onUpdate, task._id, form]);
+
+    const handleCancel = useCallback(() => {
+        setForm({ title: task.title, description: task.description || "" });
+        setIsEditing(false);
+    }, [task.title, task.description]);
+
+    const toggleEdit = useCallback(() => setIsEditing(true), []);
+
+    const toggleStatus = useCallback(() => {
+        onUpdate(task._id, { status: task.status === "DONE" ? "PENDING" : "DONE" });
+    }, [onUpdate, task._id, task.status]);
+
+    const handleDelete = useCallback(() => onDelete(task._id), [onDelete, task._id]);
 
     return (
         <div className="border rounded p-4 flex justify-between items-start">
@@ -16,81 +36,40 @@ const TaskCard = ({ task, onUpdate, onDelete }) => {
                     <>
                         <input
                             value={form.title}
-                            onChange={(e) => setForm({ ...form, title: e.target.value })}
+                            onChange={(e) => handleFieldChange("title", e.target.value)}
                             className="border px-2 py-1 rounded w-full mb-2"
                         />
-
                         <textarea
                             value={form.description}
-                            onChange={(e) =>
-                                setForm({ ...form, description: e.target.value })
-                            }
+                            onChange={(e) => handleFieldChange("description", e.target.value)}
                             className="border px-2 py-1 rounded w-full"
                         />
                     </>
-                ):(
-                        <>
-                            <h3 className={`font-medium ${task.status === "DONE" && "line-through"}`}>
-                                {task.title}
-                            </h3>
-                            {task.description && (
-                                <p className="text-sm text-gray-600">{task.description}</p>
-                            )}
-                        </>
+                ) : (
+                    <>
+                        <h3 className={`font-medium ${task.status === "DONE" && "line-through"}`}>
+                            {task.title}
+                        </h3>
+                        {task.description && (
+                            <p className="text-sm text-gray-600">{task.description}</p>
+                        )}
+                    </>
                 )}
-               
             </div>
 
             <div className="flex gap-2">
                 {isEditing ? (
                     <>
-                        <button
-                            onClick={() => {
-                                onUpdate(task._id, form);
-                                setIsEditing(false);
-                            }}
-                            className="text-sm text-green-600"
-                        >
-                            Save
-                        </button>
-
-                        <button
-                            onClick={() => {
-                                setForm({
-                                    title: task.title,
-                                    description: task.description || "",
-                                });
-                                setIsEditing(false);
-                            }}
-                            className="text-sm text-gray-500"
-                        >
-                            Cancel
-                        </button>
+                        <button onClick={handleSave} className="text-sm text-green-600">Save</button>
+                        <button onClick={handleCancel} className="text-sm text-gray-500">Cancel</button>
                     </>
                 ) : (
                     <>
-                            <button
-                                onClick={() => setIsEditing(true)}
-                                className="text-sm"
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={() =>
-                                    onUpdate(task._id, {
-                                        status: task.status === "DONE" ? "PENDING" : "DONE",
-                                    })
-                                }
-                                className="text-sm"
-                            >
-                                {task.status === "DONE" ? "Undo" : "Done"}
-                            </button>
-                            <button
-                                onClick={() => onDelete(task._id)}
-                                className="text-sm text-red-500"
-                            >
-                                Delete
-                            </button>
+                        <button onClick={toggleEdit} className="text-sm">Edit</button>
+                        <button onClick={toggleStatus} className="text-sm">
+                            {task.status === "DONE" ? "Undo" : "Done"}
+                        </button>
+                        <button onClick={handleDelete} className="text-sm text-red-500">Delete</button>
                     </>
                 )}
             </div>
@@ -99,4 +78,3 @@ const TaskCard = ({ task, onUpdate, onDelete }) => {
 };
 
 export default TaskCard;
-  

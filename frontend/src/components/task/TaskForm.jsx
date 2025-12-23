@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const TaskForm = ({ onSubmit }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit({ title, description });
-        setTitle("");
-        setDescription("");
-    };
+    const handleSubmit = useCallback(
+        (e) => {
+            e.preventDefault();
+            onSubmit({ title, description });
+            setTitle("");
+            setDescription("");
+        },
+        [title, description, onSubmit]
+    );
 
     return (
         <form onSubmit={handleSubmit} className="space-y-3">

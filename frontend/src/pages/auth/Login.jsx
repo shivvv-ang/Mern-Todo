@@ -1,7 +1,7 @@
 import AuthForm from '../../components/auth/AuthForm.jsx'
 import AuthInput from '../../components/auth/AuthInput.jsx'
 import AuthButton from '../../components/auth/AuthButton.jsx'
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { loginUser } from '../../api/auth.api.js';
 import {  Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.js';
@@ -16,26 +16,24 @@ const Login = () => {
 
     const [form, setForm] = useState({ email: "", password: "" });
 
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-      };
+        setForm((prev) => ({ ...prev, [name]: value }));
+    }, []);
 
-    const handleSubmit = async (e) => {
-        
-        e.preventDefault();
-
-        const res = await loginUser(form);
-
-        login({
-            user: res.data.data,
-        });
-
-        navigate("/dashboard");
-      };
+    const handleSubmit = useCallback(
+        async (e) => {
+            e.preventDefault();
+            try {
+                const res = await loginUser(form);
+                login({ user: res.data.data });
+                navigate("/dashboard");
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        [form, login, navigate]
+      );
 
   return (
       <AuthForm

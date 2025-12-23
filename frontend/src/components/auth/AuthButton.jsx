@@ -1,4 +1,5 @@
-const AuthButton = ({ children, ...props }) => {
+import { memo } from "react";
+const AuthButton = memo(({ children, ...props }) => {
     return (
         <button
             className="
@@ -20,7 +21,7 @@ const AuthButton = ({ children, ...props }) => {
             {children}
         </button>
     );
-};
+});
 
 export default AuthButton;
   
