@@ -1,4 +1,4 @@
-import TaskCard from "./TaskCard";
+import TaskCard from "./TaskCard.jsx";
 
 
 const TaskList = ({ tasks, onUpdate, onDelete }) => {

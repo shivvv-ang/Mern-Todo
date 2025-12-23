@@ -1,9 +1,9 @@
 
-import Navbar from "../../components/layout/Navbar";
-import TaskForm from "../../components/task/TaskForm";
-import TaskList from "../../components/task/TaskList";
-import Loader from "../../components/ui/Loader";
-import useTasks from "../../hooks/useTasks";
+import Navbar from "../../components/layout/Navbar.jsx";
+import TaskForm from "../../components/task/TaskForm.jsx";
+import TaskList from "../../components/task/TaskList.jsx";
+import Loader from "../../components/ui/Loader.jsx";
+import useTasks from "../../hooks/useTasks.js";
 const Dashboard = () => {
     const { tasks, loading, addTask, updateTask, deleteTask } = useTasks();
 

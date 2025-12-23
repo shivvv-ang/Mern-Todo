@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../../api/auth.api";
-import useAuth from "../../hooks/useAuth";
+import { logoutUser } from "../../api/auth.api.js";
+import useAuth from "../../hooks/useAuth.js";
 
 
 const Navbar = () => {

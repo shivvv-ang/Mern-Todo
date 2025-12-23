@@ -1,10 +1,10 @@
-import AuthForm from '../../components/auth/AuthForm'
-import AuthInput from '../../components/auth/AuthInput'
-import AuthButton from '../../components/auth/AuthButton'
+import AuthForm from '../../components/auth/AuthForm.jsx'
+import AuthInput from '../../components/auth/AuthInput.jsx'
+import AuthButton from '../../components/auth/AuthButton.jsx'
 import { useState } from 'react';
-import { loginUser } from '../../api/auth.api';
+import { loginUser } from '../../api/auth.api.js';
 import {  Link, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth.js';
 
 
 

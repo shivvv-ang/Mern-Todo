@@ -1,8 +1,8 @@
 import { useState } from "react";
-import AuthButton from "../../components/auth/AuthButton"
-import AuthForm from "../../components/auth/AuthForm"
-import AuthInput from "../../components/auth/AuthInput"
-import { registerUser } from "../../api/auth.api";
+import AuthButton from "../../components/auth/AuthButton.jsx"
+import AuthForm from "../../components/auth/AuthForm.jsx"
+import AuthInput from "../../components/auth/AuthInput.jsx"
+import { registerUser } from "../../api/auth.api.js";
 import { Link, useNavigate } from "react-router-dom";
 
 
