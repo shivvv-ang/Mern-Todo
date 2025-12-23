@@ -1,9 +1,10 @@
+import Login from "./pages/auth/Login"
+import Register from "./pages/auth/Register"
 
-function App() {
+
+const App = () => {
   return (
-    <h1 class="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Login/>
   )
 }
 
