@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import toast from "react-hot-toast";
 
 const TaskCard = ({ task, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -11,9 +12,14 @@ const TaskCard = ({ task, onUpdate, onDelete }) => {
         setForm((prev) => ({ ...prev, [field]: value }));
     }, []);
 
-    const handleSave = useCallback(() => {
-        onUpdate(task._id, form);
-        setIsEditing(false);
+    const handleSave = useCallback(async () => {
+        try {
+            await onUpdate(task._id, form);
+            toast.success("Task updated");
+            setIsEditing(false);
+        } catch (error) {
+            toast.error(error);
+        }
     }, [onUpdate, task._id, form]);
 
     const handleCancel = useCallback(() => {
@@ -23,11 +29,25 @@ const TaskCard = ({ task, onUpdate, onDelete }) => {
 
     const toggleEdit = useCallback(() => setIsEditing(true), []);
 
-    const toggleStatus = useCallback(() => {
-        onUpdate(task._id, { status: task.status === "DONE" ? "PENDING" : "DONE" });
+    const toggleStatus = useCallback(async () => {
+        try {
+            await onUpdate(task._id, {
+                status: task.status === "DONE" ? "PENDING" : "DONE",
+            });
+            toast.success("Task status updated");
+        } catch (error) {
+            toast.error(error);
+        }
     }, [onUpdate, task._id, task.status]);
 
-    const handleDelete = useCallback(() => onDelete(task._id), [onDelete, task._id]);
+    const handleDelete = useCallback(async () => {
+        try {
+            await onDelete(task._id);
+            toast.success("Task deleted");
+        } catch (error) {
+            toast.error(error);
+        }
+    }, [onDelete, task._id]);
 
     return (
         <div className="border rounded p-4 flex justify-between items-start">

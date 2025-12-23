@@ -5,8 +5,7 @@ import { useCallback, useState } from 'react';
 import { loginUser } from '../../api/auth.api.js';
 import {  Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth.js';
-
-
+import toast from "react-hot-toast";
 
 const Login = () => {
 
@@ -27,9 +26,10 @@ const Login = () => {
             try {
                 const res = await loginUser(form);
                 login({ user: res.data.data });
+                toast.success("Logged in successfully");
                 navigate("/dashboard");
             } catch (err) {
-                console.error(err);
+                toast.error(err);
             }
         },
         [form, login, navigate]

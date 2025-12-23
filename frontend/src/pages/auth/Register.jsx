@@ -4,6 +4,7 @@ import AuthForm from "../../components/auth/AuthForm.jsx"
 import AuthInput from "../../components/auth/AuthInput.jsx"
 import { registerUser } from "../../api/auth.api.js";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Register = () => {
 
@@ -27,9 +28,10 @@ const Register = () => {
         try {
             await registerUser(form);
             setForm({ name: "", email: "", password: "" });
+            toast.success("Account created successfully");
             navigate("/login");
         } catch (err) {
-            console.error(err);
+            toast.error(err);
         } finally {
             setLoading(false);
         }

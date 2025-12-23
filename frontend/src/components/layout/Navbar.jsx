@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 import { logoutUser } from "../../api/auth.api.js";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -11,9 +12,10 @@ const Navbar = () => {
         try {
             await logoutUser();
             logout();
+            toast.success("Logged out");
             navigate("/login");
         } catch (error) {
-            console.error("Logout failed", error);
+            toast.error(error);
         }
     }, [logout, navigate]);
 

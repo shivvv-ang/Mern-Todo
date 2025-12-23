@@ -4,6 +4,7 @@ import TaskForm from "../../components/task/TaskForm.jsx";
 import TaskList from "../../components/task/TaskList.jsx";
 import Loader from "../../components/ui/Loader.jsx";
 import useTasks from "../../hooks/useTasks.js";
+
 const Dashboard = () => {
     const { tasks, loading, addTask, updateTask, deleteTask } = useTasks();
 

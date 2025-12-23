@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Suspense, lazy } from "react";
 import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 const Login = lazy(() => import("./pages/auth/Login.jsx"));
@@ -12,6 +13,12 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+          }}
+        />
         <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />

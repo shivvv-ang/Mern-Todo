@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useState, useCallback } from "react";
 
 const TaskForm = ({ onSubmit }) => {
@@ -5,15 +6,20 @@ const TaskForm = ({ onSubmit }) => {
     const [description, setDescription] = useState("");
 
     const handleSubmit = useCallback(
-        (e) => {
+        async (e) => {
             e.preventDefault();
-            onSubmit({ title, description });
-            setTitle("");
-            setDescription("");
+            try {
+                await onSubmit({ title, description });
+                toast.success("Task added");
+                setTitle("");
+                setDescription("");
+            } catch (error) {
+                toast.error(error);
+            }
         },
         [title, description, onSubmit]
     );
-
+    
     return (
         <form onSubmit={handleSubmit} className="space-y-3">
             <input
